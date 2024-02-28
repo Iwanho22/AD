@@ -44,8 +44,8 @@
     <developers>
         <developer>
             <id>${scm.developer.uid}</id>
-            <name>Name Vorname</name>
-            <email>vorname.name@stud.hslu.ch</email>
+            <name>von Rickenbach Ivo</name>
+            <email>ivo.vonrickenbach@stud.hslu.ch</email>
             <organization>HSLU Informatik</organization>
             <roles>
                 <role>Developer</role>
