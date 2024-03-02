@@ -38,9 +38,6 @@ public class SymmetricNumbers {
                     Arrays.fill(leftPart, 0);
                 }
                 middle = (middle + 1) % 10;
-
-            } else if (rightPart[i] + 1 >= 10) {
-                rightPart[i] = 0;
             }
         }
 
