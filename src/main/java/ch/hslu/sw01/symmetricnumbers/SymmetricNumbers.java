@@ -14,6 +14,9 @@ public class SymmetricNumbers {
     }
 
     public String getNexSymmetricNumber(String number) {
+        if (number.length() == 1) {
+            return number;
+        }
         int partLength = number.length() / 2;
         boolean isSizeOfNumberEven = number.length() % 2 == 0;
 
@@ -29,12 +32,15 @@ public class SymmetricNumbers {
             return number;
         }
 
-        for (int i = rightPart.length - 1; i >= 0; i--) {
-            if (rightPart[i] < leftPart[i]) {
+        var lastIndex = rightPart.length - 1;
+        for (int start = 0; start < rightPart.length; start++) {
+            var end = lastIndex - start;
+            if (rightPart[start] < leftPart[end]) {
                 if (isSizeOfNumberEven) {
-                    rightPart[i]++;
+                    rightPart[lastIndex]++;
+                    Arrays.fill(leftPart, 0);
                 } else if (middle + 1 >= 10) {
-                    rightPart[i] = (rightPart[i] + 1) % 10;
+                    rightPart[lastIndex] = (rightPart[lastIndex] + 1) % 10;
                     Arrays.fill(leftPart, 0);
                 }
                 middle = (middle + 1) % 10;
@@ -42,7 +48,7 @@ public class SymmetricNumbers {
         }
 
         var rightParAsString = Arrays.stream(rightPart).mapToObj(String::valueOf).collect(Collectors.joining(""));
-        return rightParAsString + (isSizeOfNumberEven ? "" : middle) + rightParAsString;
+        return rightParAsString + (isSizeOfNumberEven ? "" : middle) + new StringBuilder(rightParAsString).reverse();
     }
 
     private int[] toIntArray(String number) {
