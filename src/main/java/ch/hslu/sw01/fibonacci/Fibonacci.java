@@ -10,11 +10,6 @@ import java.util.Map;
 public class Fibonacci {
     private static final Map<Integer, Integer> FIBONACCI_CACHE = new HashMap<>();
 
-    static {
-        FIBONACCI_CACHE.put(0, 0);
-        FIBONACCI_CACHE.put(1, 1);
-    }
-
     public static int fiboRec1(int n) {
         // recursion base
         if (n == 0 || n == 1) {
@@ -26,32 +21,21 @@ public class Fibonacci {
     }
 
     public static int fiboRec2(int n) {
-        if (FIBONACCI_CACHE.containsKey(n) || n <= 1) {
+        if (n <= 1) {
             return n;
         }
 
-        int previous = 0;
-        if (FIBONACCI_CACHE.containsKey(n - 1)) {
-            previous = FIBONACCI_CACHE.get(n - 1);
-        } else {
-            previous = fiboRec2(n - 1);
-            FIBONACCI_CACHE.putIfAbsent(n - 1, previous);
+        if (FIBONACCI_CACHE.containsKey(n)) {
+            return FIBONACCI_CACHE.get(n);
         }
 
-        int preprevious = 0;
-        if (FIBONACCI_CACHE.containsKey(n - 2)) {
-            preprevious = FIBONACCI_CACHE.get(n - 2);
-        } else {
-            preprevious = fiboRec2(n - 2);
-            FIBONACCI_CACHE.putIfAbsent(n - 2, preprevious);
-        }
-
-        FIBONACCI_CACHE.putIfAbsent(n, previous + preprevious);
-        return previous + preprevious;
+        var fib = fiboRec2(n-1) + fiboRec2(n-2);
+        FIBONACCI_CACHE.put(n, fib);
+        return fib;
     }
 
     public static int fiboIter(int n) {
-        if (n == 0 || n == 1) {
+        if (n <= 1) {
             return n;
         }
         var previous = 0;

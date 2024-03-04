@@ -1,4 +1,4 @@
-package ch.hslu.sw02;
+package ch.hslu.sw02.ex2;
 
 import java.util.*;
 

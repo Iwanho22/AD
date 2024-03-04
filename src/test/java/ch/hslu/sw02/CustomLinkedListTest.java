@@ -1,5 +1,7 @@
 package ch.hslu.sw02;
 
+import ch.hslu.sw02.ex2.CustomLinkedList;
+import ch.hslu.sw02.ex2.CustomList;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
