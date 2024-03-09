@@ -1,6 +1,7 @@
 package ch.hslu.sw02.ex3;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 public final class SimpleStack<E> implements Stack<E> {
     public static final int DEFAULT_MAX_SIZE = 64;
@@ -65,5 +66,31 @@ public final class SimpleStack<E> implements Stack<E> {
 
         // remove reference to optimize GC
         Arrays.fill(items, null);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Iterator<E> iterator() {
+        return new SimpleStackItr(size, (E[]) items);
+    }
+
+    private class SimpleStackItr implements Iterator<E> {
+        private final E[] items;
+        private int index;
+
+        public SimpleStackItr(int size, E[] items) {
+            this.index = size - 1;
+            this.items = items;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index != -1;
+        }
+
+        @Override
+        public E next() {
+            return items[index--];
+        }
     }
 }

@@ -6,7 +6,7 @@ package ch.hslu.sw02.ex3;
  *
  * @param <E> The Type of the Elements inside the stack.
  */
-public interface Stack<E> {
+public interface Stack<E> extends Iterable<E> {
 
     /**
      * Pushes the specified item to the stack.
