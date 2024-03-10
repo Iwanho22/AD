@@ -2,7 +2,7 @@ package ch.hslu.sw02.ex2.collections;
 
 import java.util.*;
 
-public final class LinkedList<E> implements List<E> {
+public class LinkedList<E> implements List<E> {
     private Node<E> last;
     private Node<E> first;
     private int size;
@@ -113,7 +113,6 @@ public final class LinkedList<E> implements List<E> {
                     pop();
                 } else {
                     unlink(current);
-                    size--;
                 }
                 return true;
             }
@@ -145,15 +144,21 @@ public final class LinkedList<E> implements List<E> {
         if (index == size) {
             addAll(c);
         } else {
-            var prev = node(index);
-            var next = prev.next;
+            var next = node(index);
+            var prev = next.previous;
 
             for (E item : c) {
-                var current = new Node<>(item, null, next);
-                next.previous = current;
-                next = current;
+                var current = new Node<>(item, prev, null);
+                if (prev == null) {
+                    first = current;
+                } else {
+                    prev.next = current;
+                }
+                prev = current;
+                size++;
             }
 
+            next.previous = prev;
             prev.next = next;
         }
 
@@ -164,7 +169,7 @@ public final class LinkedList<E> implements List<E> {
     public boolean removeAll(Collection<?> c) {
         var changed = false;
         for (Object o : c) {
-            changed = changed || remove(o);
+            changed = remove(o) || changed;
         }
         return changed;
     }
@@ -187,6 +192,7 @@ public final class LinkedList<E> implements List<E> {
     public void clear() {
         this.last = null;
         this.first = null;
+        size = 0;
     }
 
     @Override
@@ -241,13 +247,13 @@ public final class LinkedList<E> implements List<E> {
     @Override
     public int lastIndexOf(Object o) {
         var index = size - 1;
-        for (Node<E> current = first; current != null; current = current.next) {
+        for (Node<E> current = last; current != null; current = current.previous) {
             if (Objects.equals(current.item, o)) {
                 return index;
             }
             index--;
         }
-        return 0;
+        return -1;
     }
 
     @Override
@@ -262,7 +268,7 @@ public final class LinkedList<E> implements List<E> {
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -292,7 +298,7 @@ public final class LinkedList<E> implements List<E> {
         Iterator<E> it = iterator();
 
         for (int i = 0; i < ret.length; i++) {
-            if (! it.hasNext()) { // fewer elements than expected
+            if (!it.hasNext()) { // fewer elements than expected
                 if (a == ret) {
                     ret[i] = null; // null-terminate
                 } else if (a.length < i) {
@@ -306,7 +312,7 @@ public final class LinkedList<E> implements List<E> {
                 return a;
             }
 
-            ret[i] = (T)it.next();
+            ret[i] = (T) it.next();
         }
 
         return ret;
@@ -329,7 +335,7 @@ public final class LinkedList<E> implements List<E> {
 
     private void linkBefore(E item, Node<E> next) {
         var prev = next.previous;
-        var current = new Node<>(item, prev,  next);
+        var current = new Node<>(item, prev, next);
         next.previous = current;
 
 
@@ -358,22 +364,30 @@ public final class LinkedList<E> implements List<E> {
         var prev = node.previous;
         var next = node.next;
 
-        prev.next = next;
-        next.previous = prev;
+        if (next == null) {
+            last = prev;
+        } else if (prev == null) {
+            first = next;
+        } else {
+            prev.next = next;
+            next.previous = prev;
+        }
         node.next = null;
         node.previous = null;
+        size--;
 
         return node.item;
     }
 
     private void checkElementIndex(int index) {
-        if (index > 0 || index > size - 1) {
-            throw new IndexOutOfBoundsException();
+        if (index < 0 || index > size - 1) {
+            throw new IndexOutOfBoundsException(String.format("Index %s out of bounds for list with size %s.", index,
+                    size));
         }
     }
 
     private void checkPositionIndex(int index) {
-        if (index > 0 || index > size) {
+        if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
     }
@@ -390,8 +404,6 @@ public final class LinkedList<E> implements List<E> {
         }
     }
 
-
-
     private class ListItr implements ListIterator<E> {
         private Node<E> lastReturned;
         private Node<E> next;
@@ -399,7 +411,7 @@ public final class LinkedList<E> implements List<E> {
 
         private ListItr(int index) {
             next = (index == size) ? null : node(index);
-            nextIndex =  index;
+            nextIndex = index;
         }
 
         @Override
@@ -450,8 +462,9 @@ public final class LinkedList<E> implements List<E> {
 
         @Override
         public void remove() {
-            if (lastReturned == null)
+            if (lastReturned == null) {
                 throw new IllegalStateException();
+            }
 
             var lastNext = lastReturned.next;
             unlink(lastReturned);
