@@ -29,8 +29,7 @@ public class LinkedList<E> implements List<E> {
     public E pop() {
         E ret = null;
         if (size != 0) {
-            var oldTail = first;
-            first = oldTail.next;
+            ret = unlink(first);
 
             // reset nex reference of head and tail to avoid memory leak
             if (first != null) {
@@ -38,8 +37,6 @@ public class LinkedList<E> implements List<E> {
             } else {
                 last = null;
             }
-            size--;
-            ret = oldTail.item;
         }
         return ret;
     }
@@ -54,8 +51,7 @@ public class LinkedList<E> implements List<E> {
     @Override
     public E removeLast() {
         if (size != 0) {
-            var oldLast = last;
-            last = oldLast.previous;
+            var ret = unlink(last);
 
             // reset nex reference of head and tail to avoid memory leak
             if (last != null) {
@@ -63,8 +59,7 @@ public class LinkedList<E> implements List<E> {
             } else {
                 first = null;
             }
-            size--;
-            return oldLast.item;
+            return ret;
         } else {
             throw new NoSuchElementException("List is empty.");
         }
@@ -145,21 +140,10 @@ public class LinkedList<E> implements List<E> {
             addAll(c);
         } else {
             var next = node(index);
-            var prev = next.previous;
 
             for (E item : c) {
-                var current = new Node<>(item, prev, null);
-                if (prev == null) {
-                    first = current;
-                } else {
-                    prev.next = current;
-                }
-                prev = current;
-                size++;
+                linkBefore(item, next);
             }
-
-            next.previous = prev;
-            prev.next = next;
         }
 
         return true;
@@ -281,8 +265,8 @@ public class LinkedList<E> implements List<E> {
         var obj = new Object[size];
         int index = 0;
 
-        for (E elemnt : this) {
-            obj[index++] = elemnt;
+        for (E element : this) {
+            obj[index++] = element;
         }
 
         return Arrays.copyOf(obj, size);
@@ -311,7 +295,6 @@ public class LinkedList<E> implements List<E> {
                 }
                 return a;
             }
-
             ret[i] = (T) it.next();
         }
 
@@ -319,17 +302,17 @@ public class LinkedList<E> implements List<E> {
     }
 
     private Node<E> node(int index) {
+        Node<E> x;
         if (index < (size / 2)) {
-            Node<E> x = first;
+            x = first;
             for (int i = 0; i < index; i++)
                 x = x.next;
-            return x;
         } else {
-            Node<E> x = last;
+            x = last;
             for (int i = size - 1; i > index; i--)
                 x = x.previous;
-            return x;
         }
+        return x;
     }
 
 
@@ -366,9 +349,11 @@ public class LinkedList<E> implements List<E> {
 
         if (next == null) {
             last = prev;
-        } else if (prev == null) {
+        }
+        if (prev == null) {
             first = next;
-        } else {
+        }
+        if (next != null && prev != null) {
             prev.next = next;
             next.previous = prev;
         }

@@ -482,6 +482,8 @@ class LinkedListTest {
         // assert
         assertThat(list.getFirst()).isEqualTo(1);
         assertThat(list.get(1)).isEqualTo(2);
+        assertThat(list.get(2)).isEqualTo(3);
+        assertThat(list.get(3)).isEqualTo(4);
         assertThat(list.getLast()).isEqualTo(5);
     }
 

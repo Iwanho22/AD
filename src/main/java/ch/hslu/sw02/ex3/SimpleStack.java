@@ -1,6 +1,7 @@
 package ch.hslu.sw02.ex3;
 
 import java.util.Arrays;
+import java.util.EmptyStackException;
 import java.util.Iterator;
 
 public final class SimpleStack<E> implements Stack<E> {
@@ -19,7 +20,7 @@ public final class SimpleStack<E> implements Stack<E> {
     @Override
     public void push(E item) {
         if (size == items.length) {
-            throw new IllegalStateException("Stack is full. Cannot push an element");
+            throw new StackOverflowError("Stack is full. Cannot push an element");
         }
         items[size] = item;
         size++;
@@ -28,7 +29,7 @@ public final class SimpleStack<E> implements Stack<E> {
     @Override
     public E pop() {
         if (size == 0) {
-            throw new IllegalStateException("Stack is empty. Cannot pop an element");
+            throw new EmptyStackException();
         }
         @SuppressWarnings("unchecked")
         E item = (E) items[size - 1];

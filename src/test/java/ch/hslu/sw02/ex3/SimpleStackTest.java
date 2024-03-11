@@ -2,6 +2,8 @@ package ch.hslu.sw02.ex3;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.EmptyStackException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -145,8 +147,7 @@ class SimpleStackTest {
 
         // act & assert
         assertThatThrownBy(stack::pop)
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("Stack is empty. Cannot pop an element");
+                .isInstanceOf(EmptyStackException.class);
     }
 
     @Test
@@ -159,7 +160,7 @@ class SimpleStackTest {
 
         // act & assert
         assertThatThrownBy(() -> stack.push(4))
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(StackOverflowError.class)
                 .hasMessage("Stack is full. Cannot push an element");
     }
 }
