@@ -42,7 +42,7 @@ class InOrderBinaryTreeTraverserTest {
     @Test
     public void traverseInor_addToList_shouldHaveSize10() {
         // arrange
-        BinaryTreeTraverser<Integer> traverser = new InOrderBinaryTreeTraverser();
+        BinaryTreeTraverser<Integer> traverser = new InOrderBinaryTreeTraverser<>();
         var list = new ArrayList<>();
 
         // act
@@ -55,7 +55,7 @@ class InOrderBinaryTreeTraverserTest {
     @Test
     public void traverse_addToList_orderShouldMatch() {
         // arrange
-        BinaryTreeTraverser<Integer> traverser = new InOrderBinaryTreeTraverser();
+        BinaryTreeTraverser<Integer> traverser = new InOrderBinaryTreeTraverser<>();
         var list = new ArrayList<>();
         var expected = List.of(3, 4, 5, 7, 8, 10, 12, 13, 14, 15);
 

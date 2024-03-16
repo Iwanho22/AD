@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class PreOrderBinaryTreeTraverserTest {
     private static final Logger LOG = LoggerFactory.getLogger(PreOrderBinaryTreeTraverserTest.class);
-    private BinaryTree tree = new BinaryTree();
+    private final BinaryTree tree = new BinaryTree();
 
     @BeforeEach
     public void setUp() {
