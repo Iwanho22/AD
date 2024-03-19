@@ -9,7 +9,8 @@ import java.util.Arrays;
  * @param <E> The type of the element to be stored.
  */
 public final class SimpleHashStructure<E> implements HashStructure<E> {
-    public static final int DEFAULT_CAPACITY = 10;
+    private static final int DEFAULT_CAPACITY = 10;
+    private static final Object TOMBSTONE = new Object();
 
     private final Object[] data;
     private int size;
@@ -29,11 +30,19 @@ public final class SimpleHashStructure<E> implements HashStructure<E> {
         if (data[index] == null) {
             data[index] = value;
             size++;
-        } else{
-
+            return true;
+        } else {
+            for (int i = 0; i < data.length; i++) {
+                int newIndex = (index + i) % data.length;
+                if (data[newIndex] == null || data[newIndex] == TOMBSTONE) {
+                    data[newIndex] = value;
+                    size++;
+                    return true;
+                }
+            }
         }
 
-        return true;
+        return false;
     }
 
     private int getIndex(E value) {
@@ -43,10 +52,20 @@ public final class SimpleHashStructure<E> implements HashStructure<E> {
     @Override
     public boolean remove(E value) {
         var index = getIndex(value);
-        if (data[index] != null) {
-            data[index] = null;
+
+        if (data[index] == null) {
+            return false;
+        } else if (value.equals(data[index])) {
+            data[index] = TOMBSTONE;
             size--;
             return true;
+        } else {
+            var itemIndex = findInExploratoryChain(index, value);
+            if (itemIndex > -1) {
+                data[itemIndex] = TOMBSTONE;
+                size--;
+                return true;
+            }
         }
 
         return false;
@@ -54,7 +73,25 @@ public final class SimpleHashStructure<E> implements HashStructure<E> {
 
     @Override
     public boolean contains(E value) {
-        return data[getIndex(value)] != null && data[getIndex(value)].equals(value);
+        var index = getIndex(value);
+        if (data[index] == null) {
+            return false;
+        } else if (data[index].equals(value)) {
+            return true;
+        } else {
+            return findInExploratoryChain(index, value) > -1;
+        }
+    }
+
+    private int findInExploratoryChain(int index, E value) {
+        var chainIndex = index + 1;
+        while (data[chainIndex] != null && chainIndex != index) {
+            if (data[chainIndex].equals(value)) {
+                return chainIndex;
+            }
+            chainIndex = (chainIndex + 1) % data.length;
+        }
+        return -1;
     }
 
     @Override
