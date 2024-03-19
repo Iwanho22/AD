@@ -15,10 +15,10 @@ public class BinaryTree<E extends Comparable<E>> implements Tree<E> {
 
         while (current != null) {
             LOG.info("Processing Node {}", current);
-            if ( elementHash == current.hash) {
+            if ( elementHash == current.hash && element.equals(current.value)) {
                 return true;
             }
-            if (element.compareTo(current.value) > 0) {
+            if (elementHash > current.hash) {
                 current = current.right;
             } else {
                 current = current.left;
@@ -38,11 +38,12 @@ public class BinaryTree<E extends Comparable<E>> implements Tree<E> {
             root = new Node<>(element);
             return true;
         }
+        var elementHash = element.hashCode();
 
         var current = root;
         var inserted = false;
         do {
-            if (element.compareTo(current.value) > 0) {
+            if (elementHash > current.hash) {
                 if (current.right == null) {
                     current.right = new Node<>(element);
                     inserted = true;
@@ -66,12 +67,14 @@ public class BinaryTree<E extends Comparable<E>> implements Tree<E> {
         var found = false;
         BinaryNodeType type = BinaryNodeType.ROOT;
 
+        var elementHash= element.hashCode();
+
         do {
             if (element.equals(current.value)) {
                 found = true;
             } else {
                 parentOfCurrent = current;
-                if (element.compareTo(current.value) > 0) {
+                if (elementHash > current.hash) {
                     current = current.right;
                     type = BinaryNodeType.RIGHT;
                 } else {
@@ -106,7 +109,6 @@ public class BinaryTree<E extends Comparable<E>> implements Tree<E> {
                 case BinaryNodeType.RIGHT -> parentOfCurrent.right = replacement;
                 case BinaryNodeType.ROOT -> root = replacement;
             }
-
         }
 
         return found;
