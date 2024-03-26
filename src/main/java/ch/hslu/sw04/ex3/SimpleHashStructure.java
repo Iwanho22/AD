@@ -46,7 +46,7 @@ public final class SimpleHashStructure<E> implements HashStructure<E> {
     }
 
     private int getIndex(E value) {
-        return value.hashCode() % data.length;
+        return Math.abs(value.hashCode() % data.length);
     }
 
     @Override
@@ -55,10 +55,6 @@ public final class SimpleHashStructure<E> implements HashStructure<E> {
 
         if (data[index] == null) {
             return false;
-        } else if (value.equals(data[index])) {
-            data[index] = TOMBSTONE;
-            size--;
-            return true;
         } else {
             var itemIndex = findInExploratoryChain(index, value);
             if (itemIndex > -1) {
@@ -76,21 +72,22 @@ public final class SimpleHashStructure<E> implements HashStructure<E> {
         var index = getIndex(value);
         if (data[index] == null) {
             return false;
-        } else if (data[index].equals(value)) {
-            return true;
         } else {
             return findInExploratoryChain(index, value) > -1;
         }
     }
 
-    private int findInExploratoryChain(int index, E value) {
-        var chainIndex = index + 1;
-        while (data[chainIndex] != null && chainIndex != index) {
-            if (data[chainIndex].equals(value)) {
-                return chainIndex;
+    private int findInExploratoryChain(int start, E value) {
+        int pos = start;
+        do {
+            if (data[pos] == null) {
+                return -1;
+            } else if (data[pos].equals(value)) {
+                return pos;
             }
-            chainIndex = (chainIndex + 1) % data.length;
-        }
+            pos = (pos + 1) % data.length;
+        } while (pos != start);
+
         return -1;
     }
 

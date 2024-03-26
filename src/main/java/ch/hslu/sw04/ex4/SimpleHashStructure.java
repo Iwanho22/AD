@@ -45,7 +45,7 @@ public final class SimpleHashStructure<E> implements HashStructure<E> {
     }
 
     private int getIndex(E value) {
-        return value.hashCode() % data.length;
+        return Math.abs(value.hashCode() % data.length);
     }
 
     @Override
@@ -56,12 +56,8 @@ public final class SimpleHashStructure<E> implements HashStructure<E> {
         var node = (Node<E>) data[index];
         if (node == null) {
             return false;
-        } else if (node.value.equals(value)) {
-            data[index] = node.previous;
-            size--;
-            return true;
         } else  {
-            var currentNode = node.previous;
+            var currentNode = node;
             while (currentNode != null) {
                 if (currentNode.value.equals(value)) {
                     node.previous = currentNode.previous;

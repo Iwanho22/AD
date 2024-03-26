@@ -2,6 +2,7 @@ package ch.hslu.sw04.ex4;
 
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SimpleHashStructureTest {
@@ -112,7 +113,7 @@ class SimpleHashStructureTest {
     }
 
     @Test
-    public void testContains_containedWithTombstoneInBetween_LastShouldBeTrue() {
+    public void testContains_containedWithExploratoryChain_LastShouldBeTrue() {
         // arrange
         HashStructure<Integer> hashStructure = new SimpleHashStructure<>();
         hashStructure.add(1);
@@ -128,7 +129,7 @@ class SimpleHashStructureTest {
     }
 
     @Test
-    public void testContains_containedWithTombstoneInBetween_FirstShouldBeTrue() {
+    public void testContains_containedWithExploratoryChain_FirstShouldBeTrue() {
         // arrange
         HashStructure<Integer> hashStructure = new SimpleHashStructure<>();
         hashStructure.add(1);
@@ -173,11 +174,13 @@ class SimpleHashStructureTest {
         // arrange
         HashStructure<Integer> hashStructure = new SimpleHashStructure<>();
         hashStructure.add(455);
+        hashStructure.add(555);
 
         // act
-        var res = hashStructure.remove(455);
+        var res = hashStructure.remove(555);
 
         // assert
+        assertThat(hashStructure.contains(455)).isTrue();
         assertThat(res).isTrue();
     }
 

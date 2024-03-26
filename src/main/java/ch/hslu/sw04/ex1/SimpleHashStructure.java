@@ -26,13 +26,14 @@ public final class SimpleHashStructure<E> implements HashStructure<E> {
 
         if(!value.equals(data[index])) {
             data[index] = value;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     private int getIndex(E value) {
-        return value.hashCode() % data.length;
+        return Math.abs(value.hashCode() % data.length);
     }
 
     @Override

@@ -4,6 +4,7 @@ import ch.hslu.sw02.ex3.SimpleStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -113,7 +114,7 @@ public class TestHelper {
     private static void measureDeque(TestData[] data) {
         LOG.info("Starting dry-run for java.util.LinkedList");
 
-        Deque<TestData> deque = new LinkedList<>();
+        Deque<TestData> deque = new ArrayDeque<>();
         long tDryRunStarted = System.nanoTime();
         for (int i = 0; i < data.length; i++) {
             deque.push(data[i]);
