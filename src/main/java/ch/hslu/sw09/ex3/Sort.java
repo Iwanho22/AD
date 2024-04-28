@@ -35,4 +35,36 @@ public final class Sort {
         }
         return data;
     }
+
+    public static <T extends Comparable<T>> T[] bubbleSort(T[] data) {
+        for (int i = 0; i < data.length - 1; i++) {
+            for (int j = 0; j < data.length -1 -i; j++) {
+                if (data[j].compareTo(data[j + 1]) > 0) {
+                    T tmp = data[j];
+                    data[j] = data[j + 1];
+                    data[j + 1] = tmp;
+                }
+            }
+        }
+
+        return data;
+    }
+
+    public static <T extends Comparable<T>> T[] bubbleSort2(T[] data) {
+        int i = 0;
+        boolean changed = false;
+        do {
+            for (int j = 0; j < data.length -1 -i; j++) {
+                if (data[j].compareTo(data[j + 1]) > 0) {
+                    T tmp = data[j];
+                    data[j] = data[j + 1];
+                    data[j + 1] = tmp;
+                    changed = true;
+                }
+            }
+            i++;
+        } while (i < data.length - 1 && changed);
+
+        return data;
+    }
 }

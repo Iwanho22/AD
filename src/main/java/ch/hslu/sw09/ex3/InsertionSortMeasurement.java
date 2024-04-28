@@ -5,14 +5,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 
 public class InsertionSortMeasurement {
-    private static final Logger LOG = LoggerFactory.getLogger(InsertionSortMeasurement.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SelectionSortMeasurement.class);
     private static final int TEST_DATA_COUNT = 100_000;
-    private static final int LAPS = 10;
+    private static final int LAPS = 5;
 
     public static void main(String[] args) {
         var sortedData = generateSortedTestData();
@@ -55,10 +56,11 @@ public class InsertionSortMeasurement {
     }
 
     private static List<Long> measeure(Integer[] data) {
+        var testData = deepCopyArray(data);
         List<Long> times = new ArrayList<>();
         LOG.info("Starting dry run");
         var dryRunStart = System.nanoTime();
-        Sort.insertionSort(data);
+        Sort.insertionSort(testData);
         var dryRunEnd = System.nanoTime();
         LOG.info("Dry run took {} ns", (dryRunEnd - dryRunStart));
         times.add(dryRunEnd - dryRunStart);
@@ -66,8 +68,9 @@ public class InsertionSortMeasurement {
         LOG.info("Starting hot measurement with {} laps", LAPS);
 
         for (int i = 0; i < LAPS; i++) {
+            testData = deepCopyArray(data);
             var start = System.nanoTime();
-            Sort.insertionSort(data);
+            Sort.insertionSort(testData);
             var end = System.nanoTime();
             LOG.info("Lap {} took {} ns", i, (end - start));
             times.add(end - start);
@@ -87,7 +90,7 @@ public class InsertionSortMeasurement {
     private static Integer[] generateReversedTestData() {
         var data = new Integer[TEST_DATA_COUNT];
         for (int i = TEST_DATA_COUNT - 1; i >= 0; i--) {
-            data[i] = i;
+            data[TEST_DATA_COUNT - 1 - i] = i;
         }
         return data;
     }
@@ -99,5 +102,9 @@ public class InsertionSortMeasurement {
             data[i] = random.nextInt(Integer.MAX_VALUE);
         }
         return data;
+    }
+
+    private static Integer[] deepCopyArray(Integer[] data) {
+        return Arrays.stream(data).toArray(Integer[]::new);
     }
 }

@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Random;
 
 
-public class SelectionSortMeasurement {
+public class BubbleSortMeasurement {
     private static final Logger LOG = LoggerFactory.getLogger(SelectionSortMeasurement.class);
-    private static final int TEST_DATA_COUNT = 100_000;
+    private static final int TEST_DATA_COUNT = 10_000;
     private static final int LAPS = 5;
 
     public static void main(String[] args) {
@@ -60,7 +60,7 @@ public class SelectionSortMeasurement {
         List<Long> times = new ArrayList<>();
         LOG.info("Starting dry run");
         var dryRunStart = System.nanoTime();
-        Sort.selectionSort(testData);
+        Sort.bubbleSort(testData);
         var dryRunEnd = System.nanoTime();
         LOG.info("Dry run took {} ns", (dryRunEnd - dryRunStart));
         times.add(dryRunEnd - dryRunStart);
@@ -70,7 +70,7 @@ public class SelectionSortMeasurement {
         for (int i = 0; i < LAPS; i++) {
             testData = deepCopyArray(data);
             var start = System.nanoTime();
-            Sort.selectionSort(testData);
+            Sort.bubbleSort(testData);
             var end = System.nanoTime();
             LOG.info("Lap {} took {} ns", i, (end - start));
             times.add(end - start);
