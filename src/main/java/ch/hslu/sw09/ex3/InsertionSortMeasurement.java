@@ -7,11 +7,10 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Stream;
 
 
-public class SortMeasurement {
-    private static final Logger LOG = LoggerFactory.getLogger(SortMeasurement.class);
+public class InsertionSortMeasurement {
+    private static final Logger LOG = LoggerFactory.getLogger(InsertionSortMeasurement.class);
     private static final int TEST_DATA_COUNT = 100_000;
     private static final int LAPS = 10;
 
