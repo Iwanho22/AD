@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import java.math.BigInteger;
 import java.util.Random;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -45,20 +44,22 @@ public final class PrimeCheck {
     public static void main(String[] args) throws InterruptedException {
         var count = new AtomicInteger(0);
         var threadCount = Runtime.getRuntime().availableProcessors() + 1;
-        var sema = new Semaphore(threadCount, false);
+
         try (var pool = Executors.newFixedThreadPool(threadCount)) {
-            while (count.get() < 100) {
-                sema.acquire();
-                BigInteger bi = new BigInteger(1024, new Random());
+            for (int i = 0; i < 100; i ++) {
                 pool.execute(() -> {
-                    if (bi.isProbablePrime(Integer.MAX_VALUE)) {
-                        synchronized (count) {
-                            LOG.info("{} : {}...", count.incrementAndGet(), bi.toString().substring(0, 20));
-                        }
+                    BigInteger bi;
+                    do {
+                        bi = new BigInteger(1024, new Random());
+                    } while (!bi.isProbablePrime(Integer.MAX_VALUE));
+
+                    synchronized (count) {
+                        LOG.info("{} : {}...", count.incrementAndGet(), bi.toString().substring(0, 20));
                     }
-                    sema.release();
+
                 });
             }
         }
     }
 }
+

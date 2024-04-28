@@ -65,9 +65,9 @@ public final class SpeedCount {
      * @param args not used.
      */
     public static void main(final String[] args) throws ExecutionException, InterruptedException {
-        final int passes = 200;
-        final int threads = 10;
-        final int counts = 1_000;
+        final int passes = 100;
+        final int threads = Runtime.getRuntime().availableProcessors() + 1;
+        final int counts = 100_000;
         final Counter counterSync = new SynchronizedCounter();
         long sumSync = 0;
         //dry run
