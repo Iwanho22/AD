@@ -97,10 +97,13 @@ public class SelectionSortMeasurement {
 
     private static Integer[] generateRandomtData() {
         var data = new Integer[TEST_DATA_COUNT];
+        List<Integer> list = Arrays.stream(generateSortedTestData()).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
         var random = new Random();
         for (int i = TEST_DATA_COUNT - 1; i >= 0; i--) {
-            data[i] = random.nextInt(Integer.MAX_VALUE);
+            var index = random.nextInt(list.size());
+            data[i] = list.remove(index);
         }
+
         return data;
     }
 

@@ -11,7 +11,7 @@ import java.util.Random;
 
 
 public class BubbleSort2Measurement {
-    private static final Logger LOG = LoggerFactory.getLogger(SelectionSortMeasurement.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BubbleSort2Measurement.class);
     private static final int TEST_DATA_COUNT = 100_000;
     private static final int LAPS = 5;
 
@@ -97,10 +97,13 @@ public class BubbleSort2Measurement {
 
     private static Integer[] generateRandomtData() {
         var data = new Integer[TEST_DATA_COUNT];
+        List<Integer> list = Arrays.stream(generateSortedTestData()).collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
         var random = new Random();
         for (int i = TEST_DATA_COUNT - 1; i >= 0; i--) {
-            data[i] = random.nextInt(Integer.MAX_VALUE);
+            var index = random.nextInt(list.size());
+            data[i] = list.remove(index);
         }
+
         return data;
     }
 
