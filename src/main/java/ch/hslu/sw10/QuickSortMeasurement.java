@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 public class QuickSortMeasurement {
-    private static final int LENGTH = 502_021;
+    private static final int LENGTH = 1_000_000;
     private static final int LAPS = 5;
     private static final Logger LOG = LoggerFactory.getLogger(QuickSortMeasurement.class);
 

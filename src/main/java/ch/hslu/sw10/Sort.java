@@ -11,7 +11,7 @@ public class Sort {
             while (data[up] < t) {
                 up++;
             }
-            while (data[down] >= t && down > up) {
+            while (data[down] > t && down > up) {
                 down--;
             }
             if (down > up) {
