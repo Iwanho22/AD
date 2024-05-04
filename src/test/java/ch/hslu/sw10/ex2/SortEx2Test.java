@@ -1,13 +1,12 @@
-package ch.hslu.sw10;
+package ch.hslu.sw10.ex2;
 
+import ch.hslu.sw10.ex2.SortEx2;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.util.Arrays;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SortTest {
+class SortEx2Test {
     @ParameterizedTest
     @CsvSource({
             "0:1:2:3:4:5:6:7,0:1:2:3:4:5:6:7",
@@ -23,7 +22,7 @@ class SortTest {
         var expected = String.join("", expedtedString.split(":")).toCharArray();
 
         // act
-        Sort.quickSort(data);
+        SortEx2.quickSort(data);
 
         // assert
         assertThat(data).isEqualTo(expected);
