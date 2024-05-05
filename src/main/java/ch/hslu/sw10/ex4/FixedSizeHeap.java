@@ -36,17 +36,13 @@ public class FixedSizeHeap<T extends Comparable<T>> implements Heap<T> {
         int leftChild = 1;
         int rightChild = 2;
         while (position < this.last && leftChild < this.last) {
-            if (this.heap[rightChild] == null || this.heap[leftChild].compareTo(this.heap[rightChild]) < 0) {
-                if (this.heap[position].compareTo(this.heap[leftChild]) > 0) {
-                    swap(position, leftChild);
-                }
-                position = leftChild;
-            } else {
-                if (this.heap[position].compareTo(this.heap[rightChild]) > 0) {
-                    swap(position, rightChild);
-                }
-                position = rightChild;
+            int swapIndex = this.heap[rightChild] == null
+                    || this.heap[leftChild].compareTo(this.heap[rightChild]) < 0 ? leftChild : rightChild;
+            if (this.heap[position].compareTo(this.heap[swapIndex]) > 0) {
+                swap(position, swapIndex);
             }
+
+            position = swapIndex;
             leftChild = (2 * position) + 1;
             rightChild = 2 * (position + 1);
         }
