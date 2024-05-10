@@ -1,5 +1,6 @@
-package ch.hslu.sw11;
+package ch.hslu.sw11.ex2;
 
+import ch.hslu.sw11.RandomInitTask;
 import de.vandermeer.asciitable.AsciiTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveTask;
 import java.util.stream.Collectors;
 
 public abstract class AbstractMeasurement {
@@ -22,18 +22,24 @@ public abstract class AbstractMeasurement {
         this.data = new int[size];
         this.laps = laps;
         this.times = new HashMap<>();
-    }
-
-    protected abstract Long run(int[] data, String options);
-
-    public void startMeasurement(String configuration) {
-        times.putIfAbsent(configuration, new ArrayList<>());
 
         LOG.info("Generating Test Data");
         try (final ForkJoinPool pool = new ForkJoinPool()) {
             RandomInitTask initTask = new RandomInitTask(data, 100);
             pool.invoke(initTask);
         }
+    }
+
+    public AbstractMeasurement(int size, int laps, int[] data) {
+        this.data = data;
+        this.laps = laps;
+        this.times = new HashMap<>();
+    }
+
+    protected abstract Long run(int[] data, String options);
+
+    public void startMeasurement(String configuration) {
+        times.putIfAbsent(configuration, new ArrayList<>());
 
         LOG.info("Starting Dry-Run");
         times.get(configuration).add(run(Arrays.copyOf(data, data.length), configuration));
@@ -56,7 +62,7 @@ public abstract class AbstractMeasurement {
 
         var dryRuns = times.values().stream().map(List::getFirst).map(Long::doubleValue).collect(Collectors.toList());
         addTableRow(table, "Dry run", dryRuns);
-        for (int i = 1; i < laps; i++) {
+        for (int i = 1; i < laps + 1; i++) {
             var iCopy = i;
             var time = times.values().stream().map(t -> t.get(iCopy)).map(Long::doubleValue).toList();
             addTableRow(table, String.valueOf(i), time);
@@ -64,6 +70,10 @@ public abstract class AbstractMeasurement {
         var averages = times.values().stream().map(time -> time.stream().skip(1).mapToLong(Long::valueOf).average().orElse(0L)).toList();
         addTableRow(table, "Average", averages);
         System.out.println(table.render());
+    }
+
+    public int[] getData() {
+        return data;
     }
 
     private void addTableRow(AsciiTable table, String key,  List<Double> measurement) {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.hslu.sw11;
+package ch.hslu.sw11.ex1;
 
 /**
  * Codebeispiel zu Mergesort für die Sortierung eines int-Arrays.

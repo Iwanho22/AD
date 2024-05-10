@@ -16,4 +16,4 @@
 /**
  * Codevorlagen für Uebung 1 Performance-Messungen an Mergesort - Parallelisierungsframeworks N4.
  */
-package ch.hslu.sw11;
+package ch.hslu.sw11.ex1;

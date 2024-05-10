@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.hslu.sw11;
+package ch.hslu.sw11.ex1;
 
 import java.util.Arrays;
 import java.util.concurrent.RecursiveAction;
@@ -48,7 +48,8 @@ public final class MergesortTask extends RecursiveAction {
     @Override
     protected void compute() {
         if (max - min < threshold) {
-            InsertionSort.exec(array, min, max);
+//            InsertionSort.exec(array, min, max);
+            Arrays.sort(array, min, max);
         } else {
             final int mid = min + (max - min) / 2;
             invokeAll(new MergesortTask(array, min, mid, threshold), new MergesortTask(array, mid, max, threshold));

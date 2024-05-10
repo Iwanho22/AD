@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.hslu.sw11;
+package ch.hslu.sw11.ex1;
 
 
-import java.util.Arrays;
 import java.util.concurrent.ForkJoinPool;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -40,20 +39,21 @@ public final class DemoMergesort {
      * @param args not used.
      */
     public static void main(final String[] args) {
-        final int size = 30_000_000;
+        final int size = 300_000_000;
         final int laps = 5;
-        //int calculatedThreshold = size / Runtime.getRuntime().availableProcessors() + 1;
+        var cores = Runtime.getRuntime().availableProcessors();
+        int calculatedThreshold = (size + cores -1) / cores;
         var mergeSort = new MergesortParallelMeasurement(size, laps);
-        mergeSort.startMeasurement("Threshold:50");
+        mergeSort.startMeasurement("Threshold:"+calculatedThreshold);
         mergeSort.startMeasurement("Threshold:100");
         mergeSort.startMeasurement("Threshold:150");
         mergeSort.startMeasurement("Threshold:500");
         mergeSort.startMeasurement("Threshold:1000");
         mergeSort.renderResult();
 
-        var mergeSortRec = new MergesortRecursiveMeasurement(size, laps);
-        mergeSortRec.startMeasurement("Standard");
-        mergeSortRec.renderResult();
+//        var mergeSortRec = new MergesortRecursiveMeasurement(size, laps);
+//        mergeSortRec.startMeasurement("Standard");
+//        mergeSortRec.renderResult();
     }
 
     private static class MergesortParallelMeasurement extends AbstractMeasurement {
