@@ -1,13 +1,13 @@
 package ch.hslu.sw12.States;
 
-import ch.hslu.sw12.Transisitionable;
+import ch.hslu.sw12.Transitionable;
 import ch.hslu.sw12.TransitionType;
 
-public enum State3 implements Transisitionable {
+public enum State3 implements Transitionable {
     STATE_3;
 
     @Override
-    public Transisitionable transition(TransitionType type) {
+    public Transitionable transition(TransitionType type) {
         return switch (type) {
             case ONE -> State2.STATE_2;
             default -> throw new IllegalArgumentException("Unexpected value: " + type);

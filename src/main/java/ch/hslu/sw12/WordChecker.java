@@ -7,7 +7,7 @@ import java.util.Arrays;
 public class WordChecker {
 
     public static boolean checkWord(final String word) {
-        Transisitionable state = InitialState.INITIAL_STATE;
+        Transitionable state = InitialState.INITIAL_STATE;
         var symbols = Arrays.stream(word.split("")).map(Integer::valueOf).toList();
 
         var valid = true;
