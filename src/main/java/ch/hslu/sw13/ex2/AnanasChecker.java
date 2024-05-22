@@ -1,6 +1,6 @@
-package ch.hslu.sw13;
+package ch.hslu.sw13.ex2;
 
-import ch.hslu.sw13.states.InitialState;
+import ch.hslu.sw13.ex2.states.InitialState;
 
 public class AnanasChecker {
 

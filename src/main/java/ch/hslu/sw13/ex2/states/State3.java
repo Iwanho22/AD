@@ -1,6 +1,6 @@
-package ch.hslu.sw13.states;
+package ch.hslu.sw13.ex2.states;
 
-import ch.hslu.sw13.Transitionalbe;
+import ch.hslu.sw13.ex2.Transitionalbe;
 
 public enum State3 implements Transitionalbe {
     STATE_3;

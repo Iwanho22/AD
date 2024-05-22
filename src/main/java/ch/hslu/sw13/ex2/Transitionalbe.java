@@ -1,4 +1,4 @@
-package ch.hslu.sw13;
+package ch.hslu.sw13.ex2;
 
 public interface Transitionalbe {
 

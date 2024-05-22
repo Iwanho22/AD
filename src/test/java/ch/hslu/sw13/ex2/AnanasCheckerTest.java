@@ -1,4 +1,4 @@
-package ch.hslu.sw13;
+package ch.hslu.sw13.ex2;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
